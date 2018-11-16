@@ -11,5 +11,5 @@ docker
 
 ## Requirements
 
-docker
-nothing on port 80 or 443 or 3306
+- docker
+- nothing on port 80 or 443 or 3306
