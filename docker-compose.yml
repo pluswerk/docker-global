@@ -9,13 +9,13 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./.docker/config/global-nginx-proxy/additional_nginx.conf:/etc/nginx/conf.d/additional_nginx.conf
 
-  global-db:
+  global-database:
     image: mysql:5.7
     restart: always
     ports: 
       - "3306:3306"
     volumes:
-    - ./.docker/data/global-db:/var/lib/mysql
+    - ./.docker/data/global-database:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
