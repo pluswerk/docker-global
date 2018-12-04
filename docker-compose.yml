@@ -12,10 +12,10 @@ services:
   global-db:
     image: mysql:5.7
     restart: always
-    ports: 
+    ports:
       - "3306:3306"
     volumes:
-    - ./.docker/data/global-db:/var/lib/mysql
+      - ./.docker/data/global-db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
@@ -28,7 +28,7 @@ services:
     environment:
       - VIRTUAL_HOST=~^mail\..*\.iveins\.de
       - VIRTUAL_PORT=8025
-      
+
   global-portainer:
     image: portainer/portainer
     restart: always
