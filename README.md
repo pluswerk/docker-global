@@ -2,7 +2,7 @@
 
 ## Why?
 
-It is nice if you have many Web-Projects what you need to work on.
+It is nice if you have many Web-Projects you need to work on.
 It is extendable.
 
 ## How
