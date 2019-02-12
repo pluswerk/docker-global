@@ -1,5 +1,5 @@
 # Documentation
 
-# HTTPS/SSL encryption
+## HTTPS/SSL encryption
 
 * [Self-Signed Certificate](https-self-signed.md)
