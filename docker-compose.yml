@@ -5,10 +5,8 @@ services:
     restart: always
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./.docker/config/global-nginx-proxy/certs:/etc/nginx/certs:ro
       - ./.docker/config/global-nginx-proxy/additional_nginx.conf:/etc/nginx/conf.d/additional_nginx.conf
 
   global-db:
