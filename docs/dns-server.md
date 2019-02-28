@@ -34,7 +34,7 @@ sudo resolvconf -u
 
 Tested on Windows 10.
 
-Download and install: http://mayakron.altervista.org/wikibase/show.php?id=AcrylicHome
+Download and install: https://mayakron.altervista.org/wikibase/show.php?id=AcrylicHome
 
 Start menu > Control Panel > Network and Internet > Network and Sharing Center > Change adapter settings
 
