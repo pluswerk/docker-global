@@ -2,7 +2,7 @@
 
 Docker Global Setup makes it much easier to develop websites. This bundles the most important services into a single package using [Docker](https://docker.com).
 
-The individual websites then still need the [PHP-DEV](https://github.com/pluswerk/php-dev) package and that's all.
+The individual websites then still need the [pluswerk/php-dev](https://github.com/pluswerk/php-dev) package and that's all.
 
 This setup is extensible and well customizable for the individual needs of a project.
 
