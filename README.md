@@ -1,19 +1,18 @@
-# Documentation of this Setup System
+# Docker-Global
 
-## Why?
+Docker Global Setup makes it much easier to develop websites. This bundles the most important services into a single package using [Docker](https://docker.com).
 
-It is nice if you have many Web-Projects what you need to work on. 
-It is extendable.
+The individual websites then still need the [pluswerk/php-dev](https://github.com/pluswerk/php-dev) package and that's all.
 
-## How
-
-docker
+This setup is extensible and well customizable for the individual needs of a project.
 
 ## Requirements
 
-- docker
-- nothing on port 80 or 443 or 3306
+You need [Docker](https://docker.com) and a few free ports, depending on whether you want to customize it even further.
 
-## Links:
+* [Docker](https://docker.com)
+* Ports: 80, 443, 1025, 3306
 
-https://github.com/pluswerk/php-dev
+## Documentation
+
+See the [Documentation](docs/index.md) of this Setup System.
