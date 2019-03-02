@@ -91,6 +91,9 @@ Append with your virtual machine IP, depends on your network configuration:
 
 # Redirect *.vm23.iveins.de domains to 192.168.56.101 (Another domain)
 192.168.56.101 /.*\.vm23\.iveins\.de$
+
+# Redirect *.vm23.iveins.de domains to 127.0.0.1 (Local system)
+127.0.0.1 /.*\.vm23\.iveins\.de$
 ```
 
 Maybe you must restart the Service:
