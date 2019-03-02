@@ -4,7 +4,18 @@ You can use DNS Server for the example.vm domains to work.
 IP address (192.168.56.101) must be adapted for the current environment.
 If you use Docker on the localhost, the IP is ``127.0.0.1`` .
 
-## Linux DNS Server
+## Debian DNS Server
+
+Tested on Debian GNU/Linux 9.6 (stretch)
+
+```Shell
+sudo apt -y install resolvconf dnsmasq
+sudo sh -c 'echo "address=/.vm23.iveins.de/127.0.0.1" >> /etc/dnsmasq.d/development'
+sudo systemctl restart dnsmasq
+sudo resolvconf -u
+```
+
+## Ubuntu DNS Server
 
 Tested on Ubuntu Desktop (16.04, 18.04).
 
