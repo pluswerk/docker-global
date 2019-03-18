@@ -2,7 +2,6 @@
 
 function startFunction {
   key="$1"
-  echo "running script ${key}"
   case ${key} in
      upgrade)
         git fetch && git checkout master && git pull
