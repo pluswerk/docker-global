@@ -28,7 +28,7 @@ services:
     ports:
       - "${SMTP_PORT:-1025}:1025"
     environment:
-      - VIRTUAL_HOST=~^mail\.(vm|vm\d+\.iveins\.de)$$
+      - VIRTUAL_HOST=${MAIL_VIRTUAL_HOST:-~^mail\.(vm|vm\d+\.iveins\.de)$$}
       - VIRTUAL_PORT=8025
 
   global-portainer:
@@ -38,7 +38,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.docker/data/global-portainer:/data
     environment:
-      - VIRTUAL_HOST=~^portainer\.(vm|vm\d+\.iveins\.de)$$
+      - VIRTUAL_HOST=${PORTAINER_VIRTUAL_HOST:-~^portainer\.(vm|vm\d+\.iveins\.de)$$}
     command: --no-auth
 
 networks:
