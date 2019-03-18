@@ -22,7 +22,7 @@ function startFunction {
         containers=$(docker ps --filter network=global -q)
         if [[ "$containers" ]]
         then
-          docker stop $(docker ps --filter network=global -q)
+          docker stop $(printf "%s" "${containers}")
         fi
         return
         ;;
