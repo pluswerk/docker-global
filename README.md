@@ -36,6 +36,10 @@ HTTP_PORT=80
 HTTPS_PORT=443
 DB_PORT=3306
 SMTP_PORT=1025
+
+# Overwrite global-mail or global-portainer domain
+MAIL_VIRTUAL_HOST=~^mail\.(vm|vm\d+\.iveins\.de)$$
+PORTAINER_VIRTUAL_HOST=~^portainer\.(vm|vm\d+\.iveins\.de)$$
 ````
 
 ## further Documentation
