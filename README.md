@@ -24,6 +24,14 @@ cd global
 bash start.sh start
 ````
 
+## Required ENV variable
+
+These Environment variables are required for docker-global to start.
+
+````bash
+VM_NUMBER=23
+````
+
 ## https
 
 We use [kanti/local-https](https://github.com/Kanti/local-https) for our certificate generation:
