@@ -9,8 +9,9 @@ function startFunction {
         return
         ;;
      start)
-        startFunction pull
-        startFunction build
+        startFunction upgrade && \
+        startFunction pull && \
+        startFunction build && \
         startFunction up
         return
         ;;
@@ -18,21 +19,11 @@ function startFunction {
         docker-compose up -d
         return
         ;;
-     stopOther)
-        containers=$(docker ps --filter network=global -q)
-        if [[ "$containers" ]]
-        then
-          docker stop $(docker ps --filter network=global -q)
-        fi
-        return
-        ;;
      down)
-        startFunction stopOther
         docker-compose down --remove-orphans
         return
         ;;
      stop)
-        startFunction stopOther
         docker-compose stop --remove-orphans
         return
         ;;
@@ -43,5 +34,6 @@ function startFunction {
   esac
 }
 
+docker network inspect global &>/dev/null || docker network create global
 startFunction "${@:1}"
         exit $?
