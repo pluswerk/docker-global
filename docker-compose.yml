@@ -8,7 +8,6 @@ services:
       - "${HTTPS_PORT:-443}:443"
     environment:
       - HSTS=off
-      - DHPARAM_GENERATION=false
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./.docker/config/global-nginx-proxy/additional_nginx.conf:/etc/nginx/conf.d/additional_nginx.conf
