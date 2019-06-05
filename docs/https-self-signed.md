@@ -6,10 +6,11 @@
 
 To use a self-signed certificate, a key & crt file must be created and stored in Docker-Global:
 
-```Shell
-openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-    -keyout .docker/config/global-nginx-proxy/certs/default.key \
-    -out .docker/config/global-nginx-proxy/certs/default.crt
+```bash
+sudo mkdir -p .docker/data/global-nginx-proxy/certs
+sudo openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+    -keyout .docker/data/global-nginx-proxy/certs/default.key \
+    -out .docker/data/global-nginx-proxy/certs/default.crt
 ```
 
 If you want you can create several certificates.
@@ -35,7 +36,7 @@ global-nginx-proxy:
   ports:
     - "443:443"
   volumes:
-    - ./.docker/config/global-nginx-proxy/certs:/etc/nginx/certs:ro
+    - ./.docker/data/global-nginx-proxy/certs:/etc/nginx/certs:ro
 ```
 
 ### Configure a Self-Signed Certificate in website container (php-dev)
