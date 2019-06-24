@@ -31,8 +31,8 @@ Tested on Debian GNU/Linux 9.6 (stretch).
 
 ```Shell
 sudo apt -y install resolvconf dnsmasq
-sudo sh -c 'echo "address=/.vm/127.0.0.1" >> /etc/NetworkManager/dnsmasq.d/development'
-sudo sh -c 'echo "address=/.vm23.iveins.de/127.0.0.1" >> /etc/NetworkManager/dnsmasq.d/development'
+sudo sh -c 'echo "address=/.vm/127.0.1.1" >> /etc/dnsmasq.d/development'
+sudo sh -c 'echo "address=/.vm23.iveins.de/127.0.1.1" >> /etc/dnsmasq.d/development'
 sudo systemctl restart dnsmasq
 sudo resolvconf -u
 ```
