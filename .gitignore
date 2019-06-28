@@ -1,5 +1,4 @@
-/.docker/config/global-nginx-proxy/certs/*.crt
-/.docker/config/global-nginx-proxy/certs/*.key
-/.docker/data/
-/.idea/
-.env
+/.docker/data
+/.idea
+/.env
+
