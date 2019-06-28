@@ -24,9 +24,36 @@ cd global
 bash start.sh start
 ````
 
+## Required ENV variable
+
+These Environment variables are required for docker-global to start.
+
+````bash
+VM_NUMBER=23
+HTTPS_MAIN_DOMAIN=vm23.your.tld
+DNS_CLOUDFLARE_EMAIL=cloudflare@yourmail
+DNS_CLOUDFLARE_API_KEY=0123456789abcdefghijklmnopqrstuvwxyz
+````
+
+## https
+
+We use [kanti/local-https](https://github.com/Kanti/local-https) for our certificate generation:
+
+If you want HTTPS for your setup you need to set this ENV variables: (in `.env`)
+
+````bash:
+# required:
+HTTPS_MAIN_DOMAIN=your.tld
+DNS_CLOUDFLARE_EMAIL=cloudflare@yourmail
+DNS_CLOUDFLARE_API_KEY=0123456789abcdefghijklmnopqrstuvwxyz
+
+# optional:
+SLACK_TOKEN=111111111/222222222/333333333333333333333333
+````
+
 ## .env file | Customize
 
-You can create a .env file and overwrite some Settings:
+You can create a `.env` file and overwrite some Settings:
 
 ````bash
 # restart global containers? https://docs.docker.com/compose/compose-file/#restart

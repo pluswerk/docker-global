@@ -6,10 +6,15 @@ services:
     ports:
       - "${HTTP_PORT:-80}:80"
       - "${HTTPS_PORT:-443}:443"
+    environment:
+      - HSTS=off
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./.docker/config/global-nginx-proxy/additional_nginx.conf:/etc/nginx/conf.d/additional_nginx.conf
-      - ./.docker/config/global-nginx-proxy/certs:/etc/nginx/certs:ro
+      - ./.docker/data/global-nginx-proxy/certs:/etc/nginx/certs:ro
+      - ./.docker/data/global-nginx-proxy/dhparam:/etc/nginx/dhparam
+    labels:
+      - com.github.kanti.local_https.nginx_proxy=true
 
   global-db:
     image: mysql:5.7
@@ -28,7 +33,7 @@ services:
     ports:
       - "${SMTP_PORT:-1025}:1025"
     environment:
-      - VIRTUAL_HOST=~^mail\.(vm|vm\d+\.iveins\.de)$$
+      - VIRTUAL_HOST=mail.vm${VM_NUMBER:?needed}.iveins.de
       - VIRTUAL_PORT=8025
 
   global-portainer:
@@ -38,9 +43,31 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.docker/data/global-portainer:/data
     environment:
-      - VIRTUAL_HOST=~^portainer\.(vm|vm\d+\.iveins\.de)$$
+      - VIRTUAL_HOST=portainer.vm${VM_NUMBER:?needed}.iveins.de
     command: --no-auth
+
+  global-letsencrypt:
+    image: kanti/local-https
+    restart: ${RESTART:-always}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./.docker/data/global-letsencrypt:/etc/letsencrypt
+      - ./.docker/data/global-nginx-proxy/certs:/etc/nginx/certs
+    environment:
+      - DNS_CLOUDFLARE_EMAIL=${DNS_CLOUDFLARE_EMAIL:?must be set}
+      - DNS_CLOUDFLARE_API_KEY=${DNS_CLOUDFLARE_API_KEY:?must be set}
+      - HTTPS_MAIN_DOMAIN=${HTTPS_MAIN_DOMAIN:?must be set}
+      - SLACK_TOKEN=${SLACK_TOKEN:-}
+
+  global-xhgui:
+    image: cv21/xhgui
+    restart: always
+    environment:
+      - VIRTUAL_HOST=xhgui.vm${VM_NUMBER:?needed}.iveins.de
+    networks:
+      - default
 
 networks:
   default:
-    name: global
+    external:
+      name: global
