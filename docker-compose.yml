@@ -60,7 +60,7 @@ services:
       - SLACK_TOKEN=${SLACK_TOKEN:-}
 
   global-xhgui:
-    image: cv21/xhgui
+    image: edyan/xhgui
     restart: always
     environment:
       - VIRTUAL_HOST=xhgui.vm${VM_NUMBER:?needed}.iveins.de
