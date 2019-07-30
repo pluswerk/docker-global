@@ -62,8 +62,12 @@ services:
   global-xhgui:
     image: edyan/xhgui
     restart: always
+    expose:
+      - "8000"
     environment:
+      - PHP_WEBSERVER_PORT=8000
       - VIRTUAL_HOST=xhgui.vm${VM_NUMBER:?needed}.iveins.de
+      - VIRTUAL_PORT=8000
     networks:
       - default
 
