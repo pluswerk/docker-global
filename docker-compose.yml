@@ -49,6 +49,8 @@ services:
   global-letsencrypt:
     image: kanti/local-https
     restart: ${RESTART:-always}
+    depends_on:
+      - global-nginx-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.docker/data/global-letsencrypt:/etc/letsencrypt
