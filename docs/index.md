@@ -1,8 +1,7 @@
 # Documentation
 
-For a cool forwarding of the domains by means of local DNS:
-
-* [DNS Server](dns-server.md)
+We haven't gotten around to completing the documentation. If you posses the knowledge, you could have a go at 
+documenting the rest of the functionality and create a Pull Request.  
 
 ## HTTPS/SSL encryption
 
