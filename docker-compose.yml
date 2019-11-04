@@ -61,6 +61,17 @@ services:
       - HTTPS_MAIN_DOMAIN=${HTTPS_MAIN_DOMAIN:?must be set}
       - SLACK_TOKEN=${SLACK_TOKEN:-}
 
+  global-dashboard:
+    image: pluswerk/php-dev:nginx-7.3
+    volumes:
+      - ./dashboard:/app
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - VIRTUAL_HOST=dashboard.${TLD_DOMAIN:-docker}
+      - WEB_DOCUMENT_ROOT=/app
+      - APPLICATION_UID=${APPLICATION_UID:-1000}
+      - APPLICATION_GID=${APPLICATION_GID:-1000}
+
   global-xhgui:
     image: edyan/xhgui
     restart: always
