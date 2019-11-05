@@ -1,35 +1,48 @@
 <?php
 
-exec('sudo docker ps -q', $containers);
+$containerData = json_decode(shell_exec('sudo docker inspect $(sudo docker ps -q)'));
 $data = [];
 
-foreach ($containers as $container) {
-    $containerInspectCmd = "sudo docker inspect --format='{{json .}}' " . $container;
-    $containerInfo = json_decode(shell_exec($containerInspectCmd));
-    $envVariableArray = preg_grep('/VIRTUAL_HOST=.*$/', $containerInfo->Config->Env);
+foreach ($containerData as $container) {
+    $envVariableArray = preg_grep('/VIRTUAL_HOST=.*$/', $container->Config->Env);
     $virtualHostArray = [];
     if (!empty($envVariableArray)) {
         $virtualHostEnv = $envVariableArray[0];
         $virtualHosts = explode('=', $virtualHostEnv)[1];
         $virtualHostArray = [$virtualHosts];
-        if (strpos($virtualHosts, ',')){
+        if (strpos($virtualHosts, ',') !== false){
             $virtualHostArray = explode(',', $virtualHosts);
         }
     }
-    $dataEntry = ['name' => $containerInfo->Name, 'domains' => $virtualHostArray];
+    $dataEntry = ['name' => $container->Name, 'domains' => $virtualHostArray];
     array_push($data, $dataEntry);
 }
 
-$html = '<table><thead><tr><th>Container Name</th><th>Url(s)</th></tr></thead><tbody>';
 
+$tbodyData = '';
 foreach ($data as $dataEntry) {
-    $html .= '<tr><td>' . $dataEntry['name'] . '</td>';
+    $tbodyData .= '<tr><td>' . $dataEntry['name'] . '</td>';
     foreach ($dataEntry['domains'] as $domain) {
-        $html .= '<td><a href="https://' . $domain .'">'. $domain . '</a></td>';
+        $tbodyData .= '<td><a href="https://' . $domain .'">'. $domain . '</a></td>';
     }
-    $html .= '</tr>';
+    $tbodyData .= '</tr>';
 }
 
-$html .= '</tbody></table>';
+$html = <<<HTML
+
+<html lang="en">
+    <body>
+        <table>
+            <thead>
+                <tr><th>Container Name</th><th>Url(s)</th></tr>
+            </thead>
+            <tbody>
+                {$tbodyData}
+            </tbody>
+        </table>
+    </body>
+</html>
+
+HTML;
 
 echo $html;
