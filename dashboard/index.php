@@ -4,25 +4,32 @@ exec('sudo docker ps -q', $containers);
 $data = [];
 
 foreach ($containers as $container) {
-    $containerNameCmd = "sudo docker inspect --format '{{.Name}}' " . $container;
-    $containerConfigCmd = "sudo docker inspect --format '{{.Config.Env}}' " . $container;
-    $resultName = shell_exec($containerNameCmd);
-    $resultConfig = shell_exec($containerConfigCmd);
-    $resultConfig = explode(' ', $resultConfig);
-    $envVariableArray = preg_grep('/VIRTUAL_HOST=.*$/', $resultConfig);
-    if (empty($envVariableArray)) {
-        $data[$resultName] = ' ';
-    } else {
-        $virtualHostArray = $envVariableArray[0];
-        $virtualHost = explode('=', $virtualHostArray)[1];
-        $data[$resultName] = $virtualHost;
+    $containerInspectCmd = "sudo docker inspect --format='{{json .}}' " . $container;
+    $containerInfo = json_decode(shell_exec($containerInspectCmd));
+    $envVariableArray = preg_grep('/VIRTUAL_HOST=.*$/', $containerInfo->Config->Env);
+    $virtualHostArray = [];
+    if (!empty($envVariableArray)) {
+        $virtualHostEnv = $envVariableArray[0];
+        $virtualHosts = explode('=', $virtualHostEnv)[1];
+        $virtualHostArray = [$virtualHosts];
+        if (strpos($virtualHosts, ',')){
+            $virtualHostArray = explode(',', $virtualHosts);
+        }
     }
+    $dataEntry = ['name' => $containerInfo->Name, 'domains' => $virtualHostArray];
+    array_push($data, $dataEntry);
 }
 
-$html = '<table><thead><tr><th>Container Name</th><th>URL</th></tr></thead><tbody>';
-foreach ($data as $containerName => $vHost) {
-    $html .= '<tr><td>' . $containerName . '</td><td><a href="https://' . $vHost . '">' . $vHost . '</a></td>';
+$html = '<table><thead><tr><th>Container Name</th><th>Url(s)</th></tr></thead><tbody>';
+
+foreach ($data as $dataEntry) {
+    $html .= '<tr><td>' . $dataEntry['name'] . '</td>';
+    foreach ($dataEntry['domains'] as $domain) {
+        $html .= '<td><a href="https://' . $domain .'">'. $domain . '</a></td>';
+    }
+    $html .= '</tr>';
 }
+
 $html .= '</tbody></table>';
 
 echo $html;
