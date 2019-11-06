@@ -3,19 +3,18 @@
 
 class DataProcessor
 {
-    public $jsonContainerData;
-    public $processedData;
+    protected $jsonContainerData;
+    protected $processedData = [];
 
     public function __construct() {
         $this->jsonContainerData = json_decode(shell_exec('sudo docker inspect $(sudo docker ps -qa)'));
-        $this->processedData = [];
     }
 
-    public function getVirtualHostEnvVariable($container) {
+    protected function getVirtualHostEnvVariable($container): array {
         return preg_grep('/VIRTUAL_HOST=.*$/', $container->Config->Env);
     }
 
-    public function processVirtualHostEnvVariable($envVariableArray) {
+    protected function processVirtualHostEnvVariable($envVariableArray): array {
         if (!empty($envVariableArray)) {
             $virtualHostEnv = $envVariableArray[0];
             $virtualHosts = explode('=', $virtualHostEnv)[1];
@@ -28,12 +27,12 @@ class DataProcessor
         return [];
     }
 
-    public function process() {
+    public function process(): array {
         foreach ($this->jsonContainerData as $container){
             $virtualHostsEnvArray = $this->getVirtualHostEnvVariable($container);
             $virtualHosts = $this->processVirtualHostEnvVariable($virtualHostsEnvArray);
             $dataEntry = ['name' => $container->Name, 'domains' => $virtualHosts];
-            array_push($this->processedData, $dataEntry);
+            $this->processedData[] = $dataEntry;
         }
         return $this->processedData;
     }

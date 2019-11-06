@@ -1,42 +1,13 @@
 <?php
 
 require_once("DataProcessor.php");
+require_once("HtmlProcessor.php");
 
 $containerDataProcessor = new DataProcessor();
 $data = $containerDataProcessor->process();
 
-$tbodyData = '';
-foreach ($data as $dataEntry) {
-    if (count($dataEntry['domains']) < 1) {
-        $tbodyData .= '<tr><td>' . $dataEntry['name'] . '</td><td>' . $dataEntry['domains'][0] . '</td></tr>';
-    }
-    else {
-        foreach ($dataEntry['domains'] as $index => $domain) {
-            if ($index === 0) {
-                $tbodyData .= '<tr><td>' . $dataEntry['name'] . '</td><td>' . $domain . '</td></tr>';
-            }
-            else {
-                $tbodyData .= '<tr><td></td><td>' . $domain . '</td></tr>';
-            }
-        }
-    }
-}
+$htmlProcessor = new HtmlProcessor($data);
+$tableBody = $htmlProcessor->generateTableBody();
+$table = $htmlProcessor->generateTable($tableBody);
 
-$html = <<<HTML
-
-<html lang="en">
-    <body>
-        <table>
-            <thead>
-                <tr><th>Container Name</th><th>Url(s)</th></tr>
-            </thead>
-            <tbody>
-                {$tbodyData}
-            </tbody>
-        </table>
-    </body>
-</html>
-
-HTML;
-
-echo $html;
+echo $table;
