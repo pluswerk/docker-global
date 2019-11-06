@@ -10,17 +10,17 @@ class HtmlProcessor
     }
 
     protected function createOneRow(array $dataItem): string {
-        return '<tr><td>'. $dataItem['name']. '</td><td>' . $dataItem['domains'][0] . '</td></tr>';
+        return '<tr><td>'. $dataItem['name']. '</td><td><a href="https://'. $dataItem['domains'][0]. '">' . $dataItem['domains'][0] . '</a></td></tr>';
     }
 
     protected function createMultipleRows(array $dataItem): string {
         $rows = '';
         foreach ($dataItem['domains'] as $index => $domain) {
             if ($index === 0) {
-                $rows .= '<tr><td>' . $dataItem['name'] . '</td><td>' . $domain . '</td></tr>';
+                $rows .= '<tr><td>' . $dataItem['name'] . '</td><td><a href="https://'. $domain. '">' . $domain . '</a></td></tr>';
             }
             else {
-                $rows .= '<tr><td></td><td>' . $domain . '</td></tr>';
+                $rows .= '<tr><td></td><td><a href="https://'. $domain. '">' . $domain . '</a></td></tr>';
             }
         }
         return $rows;
