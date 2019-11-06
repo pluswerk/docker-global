@@ -14,7 +14,7 @@ class DataProcessor
         return preg_grep('/VIRTUAL_HOST=.*$/', $container->Config->Env);
     }
 
-    protected function processVirtualHostEnvVariable($envVariableArray): array {
+    protected function processVirtualHostEnvVariable(array $envVariableArray): array {
         if (!empty($envVariableArray)) {
             $virtualHostEnv = $envVariableArray[0];
             $virtualHosts = explode('=', $virtualHostEnv)[1];

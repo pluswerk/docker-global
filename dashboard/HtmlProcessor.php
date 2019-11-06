@@ -9,12 +9,12 @@ class HtmlProcessor
         $this->tableBodyData = $tableBodyDataParam;
     }
 
-    protected function createOneRow(array $dataItem) {
+    protected function createOneRow(array $dataItem): string {
         return '<tr><td>'. $dataItem['name']. '</td><td>' . $dataItem['domains'][0] . '</td></tr>';
     }
 
-    protected function createMultipleRows(array $dataItem) {
-        $rows = null;
+    protected function createMultipleRows(array $dataItem): string {
+        $rows = '';
         foreach ($dataItem['domains'] as $index => $domain) {
             if ($index === 0) {
                 $rows .= '<tr><td>' . $dataItem['name'] . '</td><td>' . $domain . '</td></tr>';
@@ -26,8 +26,8 @@ class HtmlProcessor
         return $rows;
     }
 
-    public function generateTableBody() {
-        $htmlTableRows = null;
+    public function generateTableBody(): string {
+        $htmlTableRows = '';
         foreach ($this->tableBodyData as $tableRow) {
             if (count($tableRow['domains']) === 1) {
                 $htmlTableRows .= $this->createOneRow($tableRow);
@@ -39,7 +39,7 @@ class HtmlProcessor
         return $htmlTableRows;
     }
 
-    public function generateTable($tableBody) {
+    public function generateTable(string $tableBody): string {
         return <<<HTML
             <html lang="en">
                 <body>
