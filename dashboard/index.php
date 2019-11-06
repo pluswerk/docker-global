@@ -1,31 +1,25 @@
 <?php
 
-$containerData = json_decode(shell_exec('sudo docker inspect $(sudo docker ps -q)'));
-$data = [];
+require_once("DataProcessor.php");
 
-foreach ($containerData as $container) {
-    $envVariableArray = preg_grep('/VIRTUAL_HOST=.*$/', $container->Config->Env);
-    $virtualHostArray = [];
-    if (!empty($envVariableArray)) {
-        $virtualHostEnv = $envVariableArray[0];
-        $virtualHosts = explode('=', $virtualHostEnv)[1];
-        $virtualHostArray = [$virtualHosts];
-        if (strpos($virtualHosts, ',') !== false){
-            $virtualHostArray = explode(',', $virtualHosts);
-        }
-    }
-    $dataEntry = ['name' => $container->Name, 'domains' => $virtualHostArray];
-    array_push($data, $dataEntry);
-}
-
+$containerDataProcessor = new DataProcessor();
+$data = $containerDataProcessor->process();
 
 $tbodyData = '';
 foreach ($data as $dataEntry) {
-    $tbodyData .= '<tr><td>' . $dataEntry['name'] . '</td>';
-    foreach ($dataEntry['domains'] as $domain) {
-        $tbodyData .= '<td><a href="https://' . $domain .'">'. $domain . '</a></td>';
+    if (count($dataEntry['domains']) < 1) {
+        $tbodyData .= '<tr><td>' . $dataEntry['name'] . '</td><td>' . $dataEntry['domains'][0] . '</td></tr>';
     }
-    $tbodyData .= '</tr>';
+    else {
+        foreach ($dataEntry['domains'] as $index => $domain) {
+            if ($index === 0) {
+                $tbodyData .= '<tr><td>' . $dataEntry['name'] . '</td><td>' . $domain . '</td></tr>';
+            }
+            else {
+                $tbodyData .= '<tr><td></td><td>' . $domain . '</td></tr>';
+            }
+        }
+    }
 }
 
 $html = <<<HTML
