@@ -33,7 +33,7 @@ services:
     ports:
       - "${SMTP_PORT:-1025}:1025"
     environment:
-      - VIRTUAL_HOST=mail.vm${VM_NUMBER:?needed}.iveins.de
+      - VIRTUAL_HOST=mail.${TLD_DOMAIN:?needed}
       - VIRTUAL_PORT=8025
 
   global-portainer:
@@ -43,7 +43,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.docker/data/global-portainer:/data
     environment:
-      - VIRTUAL_HOST=portainer.vm${VM_NUMBER:?needed}.iveins.de
+      - VIRTUAL_HOST=portainer.${TLD_DOMAIN:?needed}
     command: --no-auth
 
   global-letsencrypt:
@@ -65,7 +65,7 @@ services:
     image: edyan/xhgui
     restart: always
     environment:
-      - VIRTUAL_HOST=xhgui.vm${VM_NUMBER:?needed}.iveins.de
+      - VIRTUAL_HOST=xhgui.${TLD_DOMAIN:?needed}
     networks:
       - default
 

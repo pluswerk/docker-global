@@ -1,5 +1,11 @@
 #!/bin/bash
 
+. .env
+
+if [ -z "$TLD_DOMAIN" ]; then
+  export TLD_DOMAIN=vm${VM_NUMBER}.iveins.de
+fi
+
 function startFunction {
   key="$1"
   case ${key} in

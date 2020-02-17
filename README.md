@@ -29,7 +29,7 @@ bash start.sh start
 These Environment variables are required for docker-global to start.
 
 ````bash
-VM_NUMBER=23
+TLD_DOMAIN=vm23.your.tld
 HTTPS_MAIN_DOMAIN=vm23.your.tld
 DNS_CLOUDFLARE_EMAIL=cloudflare@yourmail
 DNS_CLOUDFLARE_API_KEY=0123456789abcdefghijklmnopqrstuvwxyz
