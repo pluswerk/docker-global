@@ -2,7 +2,7 @@ version: '3.5'
 services:
   global-nginx-proxy:
     image: jwilder/nginx-proxy
-    restart: ${RESTART:-always}
+    restart: ${RESTART:-unless-stopped}
     ports:
       - "${HTTP_PORT:-80}:80"
       - "${HTTPS_PORT:-443}:443"
@@ -18,7 +18,7 @@ services:
 
   global-db:
     image: mysql:5.7
-    restart: ${RESTART:-always}
+    restart: ${RESTART:-unless-stopped}
     ports:
       - "${DB_PORT:-3306}:3306"
     volumes:
@@ -29,7 +29,7 @@ services:
 
   global-mail:
     image: mailhog/mailhog
-    restart: ${RESTART:-always}
+    restart: ${RESTART:-unless-stopped}
     ports:
       - "${SMTP_PORT:-1025}:1025"
     environment:
@@ -38,7 +38,7 @@ services:
 
   global-portainer:
     image: portainer/portainer
-    restart: ${RESTART:-always}
+    restart: ${RESTART:-unless-stopped}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.docker/data/global-portainer:/data
@@ -48,7 +48,7 @@ services:
 
   global-letsencrypt:
     image: kanti/local-https
-    restart: ${RESTART:-always}
+    restart: ${RESTART:-unless-stopped}
     depends_on:
       - global-nginx-proxy
     volumes:
@@ -63,7 +63,7 @@ services:
 
   global-xhgui:
     image: edyan/xhgui
-    restart: always
+    restart: ${RESTART:-unless-stopped}
     environment:
       - VIRTUAL_HOST=xhgui.${TLD_DOMAIN:?needed}
     networks:
