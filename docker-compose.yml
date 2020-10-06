@@ -37,14 +37,14 @@ services:
       - VIRTUAL_PORT=8025
 
   global-portainer:
-    image: portainer/portainer
+    image: portainer/portainer-ce
     restart: ${RESTART:-unless-stopped}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.docker/data/global-portainer:/data
     environment:
       - VIRTUAL_HOST=portainer.${TLD_DOMAIN:?needed}
-    command: --no-auth
+      - VIRTUAL_PORT=9000
 
   global-letsencrypt:
     image: kanti/local-https

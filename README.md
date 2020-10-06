@@ -24,8 +24,6 @@ cd global
 bash start.sh start
 ````
 
-## Required ENV variable
-
 These Environment variables are required for docker-global to start.
 
 ````bash
@@ -34,6 +32,12 @@ HTTPS_MAIN_DOMAIN=vm23.your.tld
 DNS_CLOUDFLARE_EMAIL=cloudflare@yourmail
 DNS_CLOUDFLARE_API_KEY=0123456789abcdefghijklmnopqrstuvwxyz
 ````
+
+Go to your Portainer URL and create a user.
+
+Configure Portainer:
+
+* Settings > Authentification > Session lifetime = 1 year
 
 ## https
 
