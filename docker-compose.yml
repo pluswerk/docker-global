@@ -66,6 +66,8 @@ services:
     restart: ${RESTART:-unless-stopped}
     environment:
       - VIRTUAL_HOST=xhgui.${TLD_DOMAIN:?needed}
+    volumes:
+    - ./.docker/data/global-xhgui:/data/db
     networks:
       - default
 

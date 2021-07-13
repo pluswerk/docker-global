@@ -2,6 +2,9 @@
 
 . .env
 
+mkdir -p ./.docker/data/global-xhgui
+sudo chmod -R 777 ./.docker/data/global-xhgui
+
 if [ -z "$TLD_DOMAIN" ]; then
   export TLD_DOMAIN=vm${VM_NUMBER}.iveins.de
 fi
