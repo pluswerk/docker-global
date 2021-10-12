@@ -11,7 +11,7 @@ This setup is extensible and well customizable for the individual needs of a pro
 You need [Docker](https://docker.com) and a few free ports, depending on whether you want to customize it even further.
 
 * [Docker](https://docker.com)
-* Free Ports: 80, 443, 1025, 3306
+* Free Ports: 80, 443, 1025, 3306, 3308
 
 ## Setup steps
 
