@@ -37,7 +37,7 @@ services:
       - ./mysql_native_password.sql:/docker-entrypoint-initdb.d/mysql_native_password.sql
     environment:
       - MYSQL_ROOT_PASSWORD=root
-    command: --ssl=0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-allowed-packet=16MB --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    command: --init-file /docker-entrypoint-initdb.d/mysql_native_password.sql --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-allowed-packet=16MB --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
 
   global-mail:
     image: mailhog/mailhog
