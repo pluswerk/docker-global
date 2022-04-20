@@ -4,6 +4,7 @@
 
 mkdir -p ./.docker/data/global-xhgui
 sudo chmod -R 777 ./.docker/data/global-xhgui
+sudo chmod -R 777 ./mysql_native_password.sql
 
 if [ -z "$TLD_DOMAIN" ]; then
   export TLD_DOMAIN=vm${VM_NUMBER}.iveins.de
