@@ -49,7 +49,7 @@ services:
       - VIRTUAL_PORT=8025
 
   global-portainer:
-    image: portainer/portainer
+    image: portainer/portainer:1.25.0
     restart: ${RESTART:-unless-stopped}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
