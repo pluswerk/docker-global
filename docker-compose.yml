@@ -83,7 +83,15 @@ services:
     networks:
       - default
 
+  global-chadburn:
+    image: premoweb/chadburn:latest
+    restart: ${RESTART:-unless-stopped}
+    command: daemon
+    volumes:
+      - ./chadburn.conf:/etc/chadburn.conf
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
 networks:
   default:
-    external:
-      name: global
+    name: global
+    external: true
