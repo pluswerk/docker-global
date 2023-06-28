@@ -14,12 +14,18 @@ if [ $(id -gn) != docker ]; then
   exec sg docker "$0 $*"
 fi
 
-read -p "What is your name (Format like this: Matthias Vogel): " NAME
-read -p "What is your email address (Format like this: m.vogel@andersundsehr.com): " EMAIL
-read -p "What is your TLD_DOMAIN https://jira.pluswerk.ag/wiki/display/AUSW/VM+Nummern (Format like this: vm23.iveins.de): " TLD_DOMAIN
-read -p "DNS_CLOUDFLARE_API_KEY: " DNS_CLOUDFLARE_API_KEY
-read -p "SLACK_TOKEN: " SLACK_TOKEN
-read -p "SENTRY_DSN: " SENTRY_DSN
+NAME="Matthias Vogel"
+EMAIL="m.vogel@andersundsehr.com"
+TLD_DOMAIN=vm23.iveins.de
+DNS_CLOUDFLARE_API_KEY=5c17c5906b917a9f793c92b53b634862d200f
+SLACK_TOKEN=T02A9BKD2/BHP0KAB0Q/E4GClcFgtKbCLSv7xQWsN07M
+SENTRY_DSN=https://a4554f92ef8e481aa51781469cc4725e@sentry.andersundsehr.com/49
+#read -p "What is your name (Format like this: Matthias Vogel): " NAME
+#read -p "What is your email address (Format like this: m.vogel@andersundsehr.com): " EMAIL
+#read -p "What is your TLD_DOMAIN https://jira.pluswerk.ag/wiki/display/AUSW/VM+Nummern (Format like this: vm23.iveins.de): " TLD_DOMAIN
+#read -p "DNS_CLOUDFLARE_API_KEY: " DNS_CLOUDFLARE_API_KEY
+#read -p "SLACK_TOKEN: " SLACK_TOKEN
+#read -p "SENTRY_DSN: " SENTRY_DSN
 
 # if ed25519 is supported, enable this:
 #if [ ! -f /home/user/.ssh/id_ed25519 ]; then
@@ -71,13 +77,35 @@ if [ ! -f ~/.composer/auth.json ]; then
   echo '{}' > ~/.composer/auth.json
 fi
 
+if grep -Fxq 'if [ -z "$SSH_AUTH_SOCK" ] ; then' ~/.bashrc ; then
+  # nothing
+  echo ""
+else
+  tee -a ~/.bashrc 1> /dev/null << 'EOF'
+
+# Run SSH Agent and add key 7d
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  if [ -f ~/.ssh/id_rsa ]; then
+    ssh-add -t 604800 ~/.ssh/id_rsa
+  fi
+  if [ -f ~/.ssh/id_ed25519 ]; then
+    ssh-add -t 604800 ~/.ssh/id_ed25519
+  fi
+fi
+EOF
+fi
+
 if grep -Fxq 'if [ $(dirs +0) == "~" ]; then' ~/.bashrc ; then
   # nothing
   echo ""
 else
-  echo 'if [ $(dirs +0) == "~" ]; then' >> ~/.bashrc
-  echo '  cd ~/www/project' >> ~/.bashrc
-  echo 'fi' >> ~/.bashrc
+  tee -a ~/.bashrc 1> /dev/null << 'EOF'
+
+if [ $(dirs +0) == "~" ]; then
+  cd ~/www/project
+fi
+EOF
 fi
 
 mkdir -p ~/www/project
