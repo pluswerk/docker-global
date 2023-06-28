@@ -1,6 +1,19 @@
 #!/bin/bash
 set -e
 
+# cat wsl-install.sh > x && chmod +x x && sh ./x ; rm x
+# curl -fsSLl https://github.com/pluswerk/docker-global/raw/master/wsl-install.sh > x && chmod +x x && sh ./x ; rm x
+
+if [ ! $(getent group docker) ]; then
+  sudo groupadd docker
+  sudo usermod -aG docker $USER
+fi
+
+if [ $(id -gn) != docker ]; then
+  # restart script with docker group:
+  exec sg docker "$0 $*"
+fi
+
 read -p "What is your name (Format like this: Matthias Vogel): " NAME
 read -p "What is your email address (Format like this: m.vogel@andersundsehr.com): " EMAIL
 read -p "What is your TLD_DOMAIN https://jira.pluswerk.ag/wiki/display/AUSW/VM+Nummern (Format like this: vm23.iveins.de): " TLD_DOMAIN
@@ -24,12 +37,14 @@ if [ ! -f /home/user/.ssh/id_rsa ]; then
   echo ""
   echo "public key:"
   cat /home/user/.ssh/id_rsa.pub
-  read -p "Press any key to continue... " -n1 -s
+  read -p "Press any key to continue... " notUsed
   echo ""
 fi
 
+echo ""
 echo "now you can wait for the install finishing..."
-
+echo ""
+echo ""
 
 echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER 1> /dev/null
 
@@ -37,10 +52,10 @@ git config --global user.name "$NAME"
 git config --global user.email "$EMAIL"
 
 # install docker
-if [ ! command -v docker &> /dev/null ]; then
+if ! [ -x "$(command -v docker)" ]; then
   curl -fsSL https://get.docker.com/ | sudo sh
 fi
-sudo usermod -aG docker $USER
+
 if [ ! -f /etc/docker/daemon.json ]; then
   echo '{"log-driver": "local", "log-opts": {"max-size": "10m"}}' | sudo tee /etc/docker/daemon.json 1> /dev/null
   sudo systemctl restart docker
@@ -52,6 +67,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 #setup default configs:
 if [ ! -f ~/.composer/auth.json ]; then
+  mkdir -p ~/.composer
   echo '{}' > ~/.composer/auth.json
 fi
 
@@ -84,6 +100,6 @@ fi
 
 bash start.sh start
 
-echo "wait for ~1min"
-sleep 60
-echo "start https://dozzle.vm$VM_NUMBER.iveins.de and check if it is working"
+echo "wait for 30s (to create certificates)"
+sleep 30
+echo "start https://dozzle.$TLD_DOMAIN and check if it is working"
