@@ -27,25 +27,24 @@ SENTRY_DSN=https://a4554f92ef8e481aa51781469cc4725e@sentry.andersundsehr.com/49
 #read -p "SLACK_TOKEN: " SLACK_TOKEN
 #read -p "SENTRY_DSN: " SENTRY_DSN
 
-# if ed25519 is supported, enable this:
-#if [ ! -f /home/user/.ssh/id_ed25519 ]; then
-#  ssh-keygen -t ed25519 -a 100 -C "$EMAIL" -f /home/user/.ssh/id_ed25519 -N=
-#  echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
-#  echo ""
-#  echo "public key:"
-#  cat /home/user/.ssh/id_ed25519.pub
-#  read -p "Press any key to continue... " -n1 -s
-#  echo ""
-#fi
-if [ ! -f /home/user/.ssh/id_rsa ]; then
-  ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f /home/user/.ssh/id_rsa -N=
+if [ ! -f /home/user/.ssh/id_ed25519 ]; then
+  ssh-keygen -t ed25519 -a 100 -C "$EMAIL" -f /home/user/.ssh/id_ed25519 -N ''
   echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
   echo ""
   echo "public key:"
-  cat /home/user/.ssh/id_rsa.pub
-  read -p "Press any key to continue... " notUsed
+  cat /home/user/.ssh/id_ed25519.pub
+  read -p "Press any key to continue... " -n1 -s
   echo ""
 fi
+#if [ ! -f /home/user/.ssh/id_rsa ]; then
+#  ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f /home/user/.ssh/id_rsa -N ''
+#  echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
+#  echo ""
+#  echo "public key:"
+#  cat /home/user/.ssh/id_rsa.pub
+#  read -p "Press any key to continue... " notUsed
+#  echo ""
+#fi
 
 echo ""
 echo "now you can wait for the install finishing..."
