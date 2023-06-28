@@ -10,6 +10,9 @@ if [ -z "$TLD_DOMAIN" ]; then
   export TLD_DOMAIN=vm${VM_NUMBER}.iveins.de
 fi
 
+export SUBDOMAIN=$(echo $TLD_DOMAIN | cut -d. -f1)
+export ZONE=$(echo $TLD_DOMAIN | cut -d. -f2-3)
+
 function startFunction {
   key="$1"
   case ${key} in

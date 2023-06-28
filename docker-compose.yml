@@ -17,6 +17,19 @@ services:
     labels:
       - com.github.kanti.local_https.nginx_proxy=true
 
+  cloudflare-ddns:
+    image: oznu/cloudflare-ddns:latest
+    restart: ${RESTART:-unless-stopped}
+    network_mode: host
+    environment:
+      - EMAIL=${DNS_CLOUDFLARE_EMAIL:?must be set}
+      - API_KEY=${DNS_CLOUDFLARE_API_KEY:?must be set}
+      - ZONE=${ZONE:?must be set}
+      - SUBDOMAIN=*.${SUBDOMAIN:?must be set}
+      - PROXIED=false
+      - INTERFACE=${DDNS_INTERFACE:-eth0}
+      - CRON=* * * * *
+
   global-db:
     image: mysql:5.7
     restart: ${RESTART:-unless-stopped}
