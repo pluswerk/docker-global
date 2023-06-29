@@ -14,18 +14,12 @@ if [ $(id -gn) != docker ]; then
   exec sg docker "$0 $*"
 fi
 
-NAME="Matthias Vogel"
-EMAIL="m.vogel@andersundsehr.com"
-TLD_DOMAIN=vm23.iveins.de
-DNS_CLOUDFLARE_API_KEY=5c17c5906b917a9f793c92b53b634862d200f
-SLACK_TOKEN=T02A9BKD2/BHP0KAB0Q/E4GClcFgtKbCLSv7xQWsN07M
-SENTRY_DSN=https://a4554f92ef8e481aa51781469cc4725e@sentry.andersundsehr.com/49
-#read -p "What is your name (Format like this: Matthias Vogel): " NAME
-#read -p "What is your email address (Format like this: m.vogel@andersundsehr.com): " EMAIL
-#read -p "What is your TLD_DOMAIN https://jira.pluswerk.ag/wiki/display/AUSW/VM+Nummern (Format like this: vm23.iveins.de): " TLD_DOMAIN
-#read -p "DNS_CLOUDFLARE_API_KEY: " DNS_CLOUDFLARE_API_KEY
-#read -p "SLACK_TOKEN: " SLACK_TOKEN
-#read -p "SENTRY_DSN: " SENTRY_DSN
+read -p "What is your name (Format like this: Matthias Vogel): " NAME
+read -p "What is your email address (Format like this: m.vogel@andersundsehr.com): " EMAIL
+read -p "What is your TLD_DOMAIN https://jira.pluswerk.ag/wiki/display/AUSW/VM+Nummern (Format like this: vm23.iveins.de): " TLD_DOMAIN
+read -p "DNS_CLOUDFLARE_API_KEY: " DNS_CLOUDFLARE_API_KEY
+read -p "SLACK_TOKEN: " SLACK_TOKEN
+read -p "SENTRY_DSN: " SENTRY_DSN
 
 if [ ! -f /home/user/.ssh/id_ed25519 ]; then
   ssh-keygen -t ed25519 -a 100 -C "$EMAIL" -f /home/user/.ssh/id_ed25519 -N ''
@@ -55,6 +49,7 @@ echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER 1> /dev/nul
 
 git config --global user.name "$NAME"
 git config --global user.email "$EMAIL"
+git config --global init.defaultBranch main
 
 # install docker
 if ! [ -x "$(command -v docker)" ]; then
