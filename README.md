@@ -63,6 +63,7 @@ HTTP_PORT=80
 HTTPS_PORT=443
 DB_PORT=3306
 SMTP_PORT=1025
+DDNS_INTERFACE=eth0
 ````
 
 ## further Documentation

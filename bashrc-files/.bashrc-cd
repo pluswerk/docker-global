@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [ $(dirs +0) == "~" ]; then
+  cd ~/www/project
+fi
