@@ -78,7 +78,7 @@ echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER 1> /dev/nul
 
 # install wudo
 if ! [ -x "$(command -v wudo)" ]; then
-  wget https://raw.githubusercontent.com/Chronial/wsl-sudo/master/wsl-sudo.py | sudo tee /usr/local/bin/wudo 1> /dev/null
+  curl -fsSL https://raw.githubusercontent.com/Chronial/wsl-sudo/master/wsl-sudo.py | sudo tee /usr/local/bin/wudo 1> /dev/null
   sudo chmod +x /usr/local/bin/wudo
 fi
 # install wudo
