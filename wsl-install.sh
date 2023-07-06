@@ -40,9 +40,9 @@ if [ -z "$TLD_DOMAIN" ]; then
   echo "TLD_DOMAIN=$TLD_DOMAIN" >> .env
   echo "HTTPS_MAIN_DOMAIN=$TLD_DOMAIN" >> .env
 fi
-if [ -z "$DNS_CLOUDFLARE_API_KEY" ]; then
-  read -p "DNS_CLOUDFLARE_API_KEY: " DNS_CLOUDFLARE_API_KEY
-  echo "DNS_CLOUDFLARE_API_KEY=$DNS_CLOUDFLARE_API_KEY" >> .env
+if [ -z "$DNS_CLOUDFLARE_API_TOKEN" ]; then
+  read -p "DNS_CLOUDFLARE_API_TOKEN: " DNS_CLOUDFLARE_API_TOKEN
+  echo "DNS_CLOUDFLARE_API_TOKEN=$DNS_CLOUDFLARE_API_TOKEN" >> .env
 fi
 if [ -z "$SLACK_TOKEN" ]; then
   read -p "SLACK_TOKEN: " SLACK_TOKEN
@@ -131,9 +131,15 @@ addOnceToFile ~/.bashrc 'source ~/www/global/bashrc-files/.bashrc-windows-hosts-
 # run hosts file sync now
 source bashrc-files/.bashrc-windows-hosts-sync
 
+if ! ssh root@20.13.155.71 -p221 echo '1' 1> /dev/null ; then
+  echo 'ask a colleague to add your SSH Key to the vm-proxy'
+  read -p "Press any key to continue... " -n1 -s
+  ssh root@20.13.155.71 -p221
+fi
+
+
 #start docker global
 bash start.sh pull
-bash start.sh build
 bash start.sh up
 
 echo "wait for 30s (to create certificates)"
