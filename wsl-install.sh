@@ -140,6 +140,12 @@ addOnceToFile /etc/wsl.conf 'generateHosts = false'
 # run hosts file sync now
 source bashrc-files/.bashrc-windows-hosts-sync
 
+if ! ssh root@20.13.155.71 -p221 echo '1' 1> /dev/null ; then
+  echo 'ask a colleague to add your SSH Key to the vm-proxy'
+  read -p "Press any key to continue... " -n1 -s
+  ssh root@20.13.155.71 -p221
+fi
+
 #start docker global
 bash start.sh pull
 bash start.sh up
