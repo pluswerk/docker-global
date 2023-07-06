@@ -78,7 +78,7 @@ echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER 1> /dev/nul
 
 # install wudo
 if ! [ -x "$(command -v wudo)" ]; then
-  sudo wget https://raw.githubusercontent.com/Chronial/wsl-sudo/master/wsl-sudo.py /usr/local/bin/wudo
+  wget https://raw.githubusercontent.com/Chronial/wsl-sudo/master/wsl-sudo.py | sudo tee /usr/local/bin/wudo 1> /dev/null
   sudo chmod +x /usr/local/bin/wudo
 fi
 # install wudo
@@ -100,6 +100,7 @@ fi
 # configure composer
 if [ ! -f ~/.composer/auth.json ]; then
   mkdir -p ~/.composer
+  rm -rf ~/.composer/auth.json
   echo '{}' > ~/.composer/auth.json
 fi
 
@@ -141,7 +142,6 @@ source bashrc-files/.bashrc-windows-hosts-sync
 
 #start docker global
 bash start.sh pull
-bash start.sh build
 bash start.sh up
 
 echo "wait for 30s (to create certificates)"

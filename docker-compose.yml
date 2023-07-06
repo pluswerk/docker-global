@@ -29,7 +29,7 @@ services:
       - CUSTOM_LOOKUP_CMD=${CUSTOM_LOOKUP_CMD:-echo '20.13.155.71'}
 
   global-vm-proxy:
-    build: andersundsehr/vm-proxy-client
+    image: andersundsehr/vm-proxy-client
     restart: ${RESTART:-unless-stopped}
     volumes:
       - ~/.ssh:/home/user/.ssh
