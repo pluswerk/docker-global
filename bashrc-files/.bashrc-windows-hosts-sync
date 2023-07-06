@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir -p ~/www/global/.docker/data/windows-hosts-file/
+
 is_wsl() {
   case "$(uname -r)" in
   *microsoft* ) true ;; # WSL 2
@@ -9,8 +11,7 @@ is_wsl() {
 }
 
 if is_wsl; then
-  if ! ps -aux | grep '[w]indows-hosts-file-sync.sh' >&/dev/null
-  then
+  if ! ps -aux | grep '[w]indows-hosts-file-sync.sh' >&/dev/null ; then
     wudo ~/www/global/windows-hosts-file-sync.sh >&/dev/null &
   fi
 fi

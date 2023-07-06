@@ -44,11 +44,11 @@ If you want HTTPS for your setup you need to set this ENV variables: (in `.env`)
 ````bash:
 # required:
 HTTPS_MAIN_DOMAIN=your.tld
-DNS_CLOUDFLARE_EMAIL=cloudflare@yourmail
-DNS_CLOUDFLARE_API_KEY=0123456789abcdefghijklmnopqrstuvwxyz
+DNS_CLOUDFLARE_API_TOKEN=_aA_AaBbCc12GgHh34_HX77AbCdEf9_23FgHtZax
 
 # optional:
 SLACK_TOKEN=111111111/222222222/333333333333333333333333
+SENTRY_DSN=https://0123456789abcdefghijklmnopqrstuvwxyz@sentry.com/123456
 ````
 
 ## .env file | Customize
@@ -64,6 +64,7 @@ HTTPS_PORT=443
 DB_PORT=3306
 SMTP_PORT=1025
 DDNS_INTERFACE=eth0
+CUSTOM_LOOKUP_CMD=echo '127.0.0.1'
 ````
 
 ## further Documentation

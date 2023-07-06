@@ -9,6 +9,7 @@ services:
     environment:
       - HSTS=off
       - DEFAULT_HOST=dozzle.${TLD_DOMAIN:?needed}
+      - TRUST_DOWNSTREAM_PROXY=true
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./.docker/config/global-nginx-proxy/additional_nginx.conf:/etc/nginx/conf.d/additional_nginx.conf
@@ -17,18 +18,30 @@ services:
     labels:
       - com.github.kanti.local_https.nginx_proxy=true
 
-  cloudflare-ddns:
+  global-cloudflare-ddns:
     image: oznu/cloudflare-ddns:latest
     restart: ${RESTART:-unless-stopped}
-    network_mode: host
     environment:
-      - EMAIL=${DNS_CLOUDFLARE_EMAIL:?must be set}
-      - API_KEY=${DNS_CLOUDFLARE_API_KEY:?must be set}
+      - API_KEY=${DNS_CLOUDFLARE_API_TOKEN:?must be set}
       - ZONE=${ZONE:?must be set}
       - SUBDOMAIN=*.${SUBDOMAIN:?must be set}
       - PROXIED=false
-      - INTERFACE=${DDNS_INTERFACE:-eth0}
-      - CRON=* * * * *
+      - CUSTOM_LOOKUP_CMD=${CUSTOM_LOOKUP_CMD:-echo '20.13.155.71'}
+
+  global-vm-proxy:
+    image: andersundsehr/vm-proxy-client
+    restart: ${RESTART:-unless-stopped}
+    volumes:
+      - ~/.ssh:/home/user/.ssh
+      - ./.docker/data/global-nginx-proxy/certs:/app/certs
+    environment:
+      - SSH_USER=root
+      - SSH_HOST=20.13.155.71
+      - SSH_PORT=221
+      - REMOTE_PORT=70${VM_NUMBER:?must be set}
+      - DEST_HOST=global-nginx-proxy
+      - DEST_PORT=443
+      - TLD_DOMAIN=${TLD_DOMAIN:?needed}
 
   global-db:
     image: mysql:5.7
@@ -68,20 +81,21 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - VIRTUAL_HOST=dozzle.${TLD_DOMAIN:?needed},portainer.${TLD_DOMAIN:?needed}
+      - VIRTUAL_HOST=dozzle.${TLD_DOMAIN:?needed}
 
   global-letsencrypt:
     image: kanti/local-https
+    network_mode: host
     restart: ${RESTART:-unless-stopped}
-    depends_on:
-      - global-nginx-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.docker/data/global-letsencrypt:/etc/letsencrypt
       - ./.docker/data/global-nginx-proxy/certs:/etc/nginx/certs
+      - /etc/hosts:/wsl-hosts-file/hosts
+      - ./.docker/data/windows-hosts-file:/windows-hosts-file/
     environment:
-      - DNS_CLOUDFLARE_EMAIL=${DNS_CLOUDFLARE_EMAIL:?must be set}
-      - DNS_CLOUDFLARE_API_KEY=${DNS_CLOUDFLARE_API_KEY:?must be set}
+      - DNS_CLOUDFLARE_API_TOKEN=${DNS_CLOUDFLARE_API_TOKEN:?must be set}
+      - DDNS_INTERFACE=${DDNS_INTERFACE:-eth0}
       - HTTPS_MAIN_DOMAIN=${HTTPS_MAIN_DOMAIN:?must be set}
       - SLACK_TOKEN=${SLACK_TOKEN:?must be set}
       - SENTRY_DSN=${SENTRY_DSN:?must be set}
