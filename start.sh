@@ -9,6 +9,9 @@ sudo chmod -R 777 ./mysql_native_password.sql
 if [ -z "$TLD_DOMAIN" ]; then
   export TLD_DOMAIN=vm${VM_NUMBER}.iveins.de
 fi
+if [ -z "$VM_NUMBER" ]; then
+  export VM_NUMBER=$(echo $TLD_DOMAIN | cut -d. -f1 | cut -dm -f2)
+fi
 
 if [ -z "$SUBDOMAIN" ]; then
   export SUBDOMAIN=$(echo $TLD_DOMAIN | cut -d. -f1)

@@ -40,9 +40,9 @@ if [ -z "$TLD_DOMAIN" ]; then
   echo "TLD_DOMAIN=$TLD_DOMAIN" >> .env
   echo "HTTPS_MAIN_DOMAIN=$TLD_DOMAIN" >> .env
 fi
-if [ -z "$DNS_CLOUDFLARE_API_KEY" ]; then
-  read -p "DNS_CLOUDFLARE_API_KEY: " DNS_CLOUDFLARE_API_KEY
-  echo "DNS_CLOUDFLARE_API_KEY=$DNS_CLOUDFLARE_API_KEY" >> .env
+if [ -z "$DNS_CLOUDFLARE_API_TOKEN" ]; then
+  read -p "DNS_CLOUDFLARE_API_TOKEN: " DNS_CLOUDFLARE_API_TOKEN
+  echo "DNS_CLOUDFLARE_API_TOKEN=$DNS_CLOUDFLARE_API_TOKEN" >> .env
 fi
 if [ -z "$SLACK_TOKEN" ]; then
   read -p "SLACK_TOKEN: " SLACK_TOKEN
@@ -59,18 +59,18 @@ if [ ! -f /home/user/.ssh/id_ed25519 ]; then
   echo ""
   echo "public key:"
   cat /home/user/.ssh/id_ed25519.pub
-  read -p "Press any key to continue... " -n1 -s
+  read -p "Press any key to continue... " notUsed
   echo ""
 fi
-#if [ ! -f /home/user/.ssh/id_rsa ]; then
-#  ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f /home/user/.ssh/id_rsa -N ''
-#  echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
-#  echo ""
-#  echo "public key:"
-#  cat /home/user/.ssh/id_rsa.pub
-#  read -p "Press any key to continue... " notUsed
-#  echo ""
-#fi
+if [ ! -f /home/user/.ssh/id_rsa ]; then
+  ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f /home/user/.ssh/id_rsa -N ''
+  echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
+  echo ""
+  echo "public key:"
+  cat /home/user/.ssh/id_rsa.pub
+  read -p "Press any key to continue... " notUsed
+  echo ""
+fi
 
 # make user sudo without password.
 echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER 1> /dev/null
@@ -80,6 +80,10 @@ echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER 1> /dev/nul
 if ! [ -x "$(command -v wudo)" ]; then
   sudo wget https://raw.githubusercontent.com/Chronial/wsl-sudo/master/wsl-sudo.py /usr/local/bin/wudo
   sudo chmod +x /usr/local/bin/wudo
+fi
+# install wudo
+if ! [ -x "$(command -v inotifywait)" ]; then
+  sudo apt install inotify-tools -y
 fi
 
 # install docker
@@ -119,7 +123,7 @@ function addOnceToFile() {
   fi
   if ! grep -Fxq "$2" $1
   then
-    echo "$2" >> $1
+    echo "$2" | sudo tee -a $1 1> /dev/null
   fi
 }
 
@@ -127,6 +131,10 @@ function addOnceToFile() {
 addOnceToFile ~/.bashrc 'source ~/www/global/bashrc-files/.bashrc-ssh-agent'
 addOnceToFile ~/.bashrc 'source ~/www/global/bashrc-files/.bashrc-cd'
 addOnceToFile ~/.bashrc 'source ~/www/global/bashrc-files/.bashrc-windows-hosts-sync'
+
+# configure wsl
+addOnceToFile /etc/wsl.conf '[network]'
+addOnceToFile /etc/wsl.conf 'generateHosts = false'
 
 # run hosts file sync now
 source bashrc-files/.bashrc-windows-hosts-sync
