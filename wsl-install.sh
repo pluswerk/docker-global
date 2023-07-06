@@ -4,6 +4,9 @@ set -e
 # curl -fsSLl https://github.com/pluswerk/docker-global/raw/master/wsl-install.sh > x && chmod +x x && sh ./x ; rm x
 
 mkdir -p ~/www/global/
+if [ ! -f x ]; then
+  mv x ~/www/global/
+fi
 cd ~/www/global/
 
 if [ ! $(getent group docker) ]; then
