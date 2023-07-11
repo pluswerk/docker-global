@@ -23,9 +23,8 @@ syncHosts() {
   chmod -x ~/www/global/.docker/data/windows-hosts-file/hosts
 }
 
-syncHosts
-# TODO switch to inotify?
-while inotifywait -e modify -e move -e create -e delete --timeout 3600 /mnt/c/Windows/System32/drivers/etc/hosts ~/www/global/.docker/data/windows-hosts-file/hosts
+while true
 do
   syncHosts
+  inotifywait -e modify -e move -e create -e delete --timeout 3600 /mnt/c/Windows/System32/drivers/etc/hosts ~/www/global/.docker/data/windows-hosts-file/hosts
 done
