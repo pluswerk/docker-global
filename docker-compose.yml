@@ -18,15 +18,15 @@ services:
     labels:
       - com.github.kanti.local_https.nginx_proxy=true
 
-  global-cloudflare-ddns:
-    image: oznu/cloudflare-ddns:latest
-    restart: ${RESTART:-unless-stopped}
-    environment:
-      - API_KEY=${DNS_CLOUDFLARE_API_TOKEN:?must be set}
-      - ZONE=${ZONE:?must be set}
-      - SUBDOMAIN=*.${SUBDOMAIN:?must be set}
-      - PROXIED=false
-      - CUSTOM_LOOKUP_CMD=${CUSTOM_LOOKUP_CMD:-echo '20.13.155.71'}
+#  global-cloudflare-ddns:
+#    image: oznu/cloudflare-ddns:latest
+#    restart: ${RESTART:-unless-stopped}
+#    environment:
+#      - API_KEY=${DNS_CLOUDFLARE_API_TOKEN:?must be set}
+#      - ZONE=${ZONE:?must be set}
+#      - SUBDOMAIN=*.${SUBDOMAIN:?must be set}
+#      - PROXIED=false
+#      - CUSTOM_LOOKUP_CMD=${CUSTOM_LOOKUP_CMD:-echo '20.13.155.71'}
 
   global-vm-proxy:
     image: andersundsehr/vm-proxy-client
