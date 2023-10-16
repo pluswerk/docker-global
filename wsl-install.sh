@@ -87,6 +87,7 @@ if ! [ -x "$(command -v wudo)" ]; then
 fi
 # install wudo
 if ! [ -x "$(command -v inotifywait)" ]; then
+  sudo apt update -y
   sudo apt install inotify-tools -y
 fi
 
