@@ -26,8 +26,8 @@ if [ -f .env ]; then
   . .env
 fi
 
-NAME=$(git config --global user.name)
-EMAIL=$(git config --global user.email)
+NAME=$(git config --global user.name || true)
+EMAIL=$(git config --global user.email || true)
 
 git config --global init.defaultBranch main
 
