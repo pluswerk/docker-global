@@ -4,6 +4,7 @@ set -e
 # curl -fsSLl https://github.com/pluswerk/docker-global/raw/master/wsl-install.sh > x && chmod +x x && sh ./x ; rm x
 
 mkdir -p ~/www/global/
+mkdir -p ~/www/project
 if [ ! -f x ]; then
   mv x ~/www/global/
 fi
@@ -146,7 +147,7 @@ source bashrc-files/.bashrc-windows-hosts-sync
 if ! ssh root@20.13.155.71 -p221 echo '1' 1> /dev/null ; then
   echo 'ask a colleague to add your SSH Key to the vm-proxy'
   read -p "Press any key to continue... " -n1 -s
-  ssh root@20.13.155.71 -p221
+  ssh root@20.13.155.71 -p221 echo '1'
 fi
 
 #start docker global
