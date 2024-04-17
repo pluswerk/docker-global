@@ -98,7 +98,6 @@ services:
       - DNS_CLOUDFLARE_API_TOKEN=${DNS_CLOUDFLARE_API_TOKEN:?must be set}
       - DDNS_INTERFACE=${DDNS_INTERFACE:-eth0}
       - HTTPS_MAIN_DOMAIN=${HTTPS_MAIN_DOMAIN:?must be set}
-      - SLACK_TOKEN=${SLACK_TOKEN:?must be set}
       - SENTRY_DSN=${SENTRY_DSN:?must be set}
 
   global-xhgui:

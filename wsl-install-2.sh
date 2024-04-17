@@ -1,26 +1,17 @@
 #!/bin/bash
 set -e
 
-# curl -fsSLl https://github.com/pluswerk/docker-global/raw/master/wsl-install.sh > x && chmod +x x && sh ./x ; rm x
-
-mkdir -p ~/www/global/
-mkdir -p ~/www/project
-if [ ! -f x ]; then
-  mv x ~/www/global/
+if [ $(id -gn) != docker ]; then
+  # restart script with docker group:
+  echo 'Please run wsl-install-1.sh first!!!'
+  exit 1
 fi
+
+mkdir -p ~/www/global
+mkdir -p ~/www/project
+
 cd ~/www/global/
 
-if [ ! $(getent group docker) ]; then
-  # create docker group
-  sudo groupadd docker
-fi
-
-if [ $(id -gn) != docker ]; then
-  # add docker group to user
-  sudo usermod -aG docker $USER
-  # restart script with docker group:
-  exec sg docker "$0 $*"
-fi
 
 if [ -f .env ]; then
   . .env
@@ -47,10 +38,6 @@ fi
 if [ -z "$DNS_CLOUDFLARE_API_TOKEN" ]; then
   read -p "DNS_CLOUDFLARE_API_TOKEN: " DNS_CLOUDFLARE_API_TOKEN
   echo "DNS_CLOUDFLARE_API_TOKEN=$DNS_CLOUDFLARE_API_TOKEN" >> .env
-fi
-if [ -z "$SLACK_TOKEN" ]; then
-  read -p "SLACK_TOKEN: " SLACK_TOKEN
-  echo "SLACK_TOKEN=$SLACK_TOKEN" >> .env
 fi
 if [ -z "$SENTRY_DSN" ]; then
   read -p "SENTRY_DSN: " SENTRY_DSN
@@ -85,7 +72,7 @@ if ! [ -x "$(command -v wudo)" ]; then
   curl -fsSL https://raw.githubusercontent.com/Chronial/wsl-sudo/master/wsl-sudo.py | sudo tee /usr/local/bin/wudo 1> /dev/null
   sudo chmod +x /usr/local/bin/wudo
 fi
-# install wudo
+# install inotify
 if ! [ -x "$(command -v inotifywait)" ]; then
   sudo apt update -y
   sudo apt install inotify-tools -y
@@ -104,7 +91,7 @@ fi
 
 # configure composer
 if [ ! -f ~/.composer/auth.json ]; then
-  mkdir -p ~/.composer
+  mkdir -p ~/.composer/cache
   rm -rf ~/.composer/auth.json
   echo '{}' > ~/.composer/auth.json
 fi
@@ -158,5 +145,3 @@ bash start.sh up
 echo "wait for 30s (to create certificates)"
 sleep 30
 echo "start https://dozzle.$TLD_DOMAIN and check if it is working"
-
-sg docker
