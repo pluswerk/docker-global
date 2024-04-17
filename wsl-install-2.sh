@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if ! [ -x "$(id -nG | grep docker)" ]; then
+if ! id -nG | grep -q docker; then
   # restart script with docker group:
   echo 'Please run wsl-install-1.sh first!!!'
   exit 1
