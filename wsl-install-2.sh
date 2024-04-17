@@ -46,21 +46,23 @@ fi
 
 if [ ! -f /home/user/.ssh/id_ed25519 ]; then
   ssh-keygen -t ed25519 -a 100 -C "$EMAIL" -f /home/user/.ssh/id_ed25519 -N ''
+  echo "-------------"
+  echo "-------------"
+  echo "-------------"
+  echo "-------------"
+  echo "-------------"
   echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
+  echo "-------------"
+  echo "-------------"
+  echo "-------------"
   echo ""
   echo "public key:"
   cat /home/user/.ssh/id_ed25519.pub
-  read -p "Press any key to continue... " notUsed
+  read -p "Press any key to continue... " -n1 -s
   echo ""
 fi
 if [ ! -f /home/user/.ssh/id_rsa ]; then
   ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f /home/user/.ssh/id_rsa -N ''
-  echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
-  echo ""
-  echo "public key:"
-  cat /home/user/.ssh/id_rsa.pub
-  read -p "Press any key to continue... " notUsed
-  echo ""
 fi
 
 # make user sudo without password.
@@ -132,7 +134,7 @@ addOnceToFile /etc/wsl.conf 'generateHosts = false'
 # run hosts file sync now
 source bashrc-files/.bashrc-windows-hosts-sync
 
-if ! ssh root@20.13.155.71 -p221 echo '1' 1> /dev/null ; then
+if ! ssh -o PasswordAuthentication=no root@20.13.155.71 -p221 echo '1' 1> /dev/null ; then
   echo 'ask a colleague to add your SSH Key to the vm-proxy'
   read -p "Press any key to continue... " -n1 -s
   ssh root@20.13.155.71 -p221 echo '1'
