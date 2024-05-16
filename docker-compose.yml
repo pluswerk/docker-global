@@ -118,6 +118,16 @@ services:
       - ./chadburn.conf:/etc/chadburn.conf
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
+  global-portainer:
+    image: portainer/portainer-ce:latest
+    restart: ${RESTART:-unless-stopped}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./.docker/data/global-portainer:/data
+    environment:
+      - VIRTUAL_HOST=portainer.${TLD_DOMAIN:?needed}
+      - VIRTUAL_PORT=9000
+
 networks:
   default:
     name: global
