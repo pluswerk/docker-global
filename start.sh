@@ -33,13 +33,13 @@ function startFunction {
         startFunction up
         ;;
      up)
-        docker-compose up -d --remove-orphans
+        docker-compose up -d --remove-orphans --wait
         ;;
      down)
         docker-compose down --remove-orphans
         ;;
      stop)
-        docker-compose stop --remove-orphans
+        docker-compose stop
         ;;
      *)
         docker-compose "${@:1}"
