@@ -3,6 +3,9 @@
 . .env
 
 mkdir -p ./.docker/data/global-xhgui
+mkdir -p ./.docker/data/global-nginx-proxy/
+sudo touch ./.docker/data/global-nginx-proxy/searchforcompose.conf
+sudo chmod -R 777 ./.docker/data/global-nginx-proxy/searchforcompose.conf
 sudo chmod -R 777 ./.docker/data/global-xhgui
 sudo chmod -R 777 ./mysql_native_password.sql
 

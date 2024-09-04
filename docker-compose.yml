@@ -7,11 +7,12 @@ services:
       - "${HTTPS_PORT:-443}:443"
     environment:
       - HSTS=off
-      - DEFAULT_HOST=dozzle.${TLD_DOMAIN:?needed}
+      - DEFAULT_HOST=searchforcompose.${TLD_DOMAIN:?needed}
       - TRUST_DOWNSTREAM_PROXY=true
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./.docker/config/global-nginx-proxy/additional_nginx.conf:/etc/nginx/conf.d/additional_nginx.conf
+      - ./.docker/data/global-nginx-proxy/searchforcompose.conf:/etc/nginx/conf.d/searchforcompose.conf
       - ./.docker/data/global-nginx-proxy/certs:/etc/nginx/certs:ro
       - ./.docker/data/global-nginx-proxy/dhparam:/etc/nginx/dhparam
     labels:
@@ -124,6 +125,18 @@ services:
     volumes:
       - ./chadburn.conf:/etc/chadburn.conf
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  global-searchforcompose:
+    image: andersundsehr/searchforcompose:latest
+    restart: ${RESTART:-unless-stopped}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - .docker/data/global-nginx-proxy/certs:/certs:ro
+      - .docker/data/global-nginx-proxy/searchforcompose.conf:/searchforcompose.conf
+    environment:
+      - VIRTUAL_HOST=searchforcompose.${TLD_DOMAIN:?TLD_DOMAIN is required}
+      - APPLICATION_UID=${APPLICATION_UID:-1000}
+      - APPLICATION_GID=${APPLICATION_GID:-1000}
 
 networks:
   default:
