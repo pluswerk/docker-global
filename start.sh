@@ -4,6 +4,9 @@
 
 mkdir -p ./.docker/data/global-xhgui
 mkdir -p ./.docker/data/global-nginx-proxy/
+if [ -d ./.docker/data/global-nginx-proxy/searchforcompose.conf ]; then
+    sudo rm -r ./.docker/data/global-nginx-proxy/searchforcompose.conf
+fi
 sudo touch ./.docker/data/global-nginx-proxy/searchforcompose.conf
 sudo chmod -R 777 ./.docker/data/global-nginx-proxy/searchforcompose.conf
 sudo chmod -R 777 ./.docker/data/global-xhgui
