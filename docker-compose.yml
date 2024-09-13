@@ -15,6 +15,7 @@ services:
       - ./.docker/data/global-nginx-proxy/searchforcompose.conf:/etc/nginx/conf.d/searchforcompose.conf
       - ./.docker/data/global-nginx-proxy/certs:/etc/nginx/certs:ro
       - ./.docker/data/global-nginx-proxy/dhparam:/etc/nginx/dhparam
+
     labels:
       - com.github.kanti.local_https.nginx_proxy=true
 
