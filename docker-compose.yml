@@ -92,6 +92,7 @@ services:
     environment:
       - VIRTUAL_HOST=dozzle.${TLD_DOMAIN:?needed}
       - DOZZLE_NO_ANALYTICS=true
+      - DOZZLE_ENABLE_ACTIONS=true
 
   global-letsencrypt:
     image: kanti/local-https
