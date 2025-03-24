@@ -121,7 +121,7 @@ services:
       - default
 
   global-chadburn:
-    image: premoweb/chadburn:latest
+    image: premoweb/chadburn:1.0.7
     restart: ${RESTART:-unless-stopped}
     command: daemon
     volumes:
