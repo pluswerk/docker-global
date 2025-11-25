@@ -39,16 +39,16 @@ function startFunction {
         startFunction up
         ;;
      up)
-        docker-compose up -d --remove-orphans --wait
+        docker compose up -d --remove-orphans --wait
         ;;
      down)
-        docker-compose down --remove-orphans
+        docker compose down --remove-orphans
         ;;
      stop)
-        docker-compose stop
+        docker compose stop
         ;;
      *)
-        docker-compose "${@:1}"
+        docker compose "${@:1}"
         ;;
   esac
 }
