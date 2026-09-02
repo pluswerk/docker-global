@@ -46,24 +46,21 @@ fi
 
 if [ ! -f /home/user/.ssh/id_ed25519 ]; then
   ssh-keygen -t ed25519 -a 100 -C "$EMAIL" -f /home/user/.ssh/id_ed25519 -N ''
-  echo "-------------"
-  echo "-------------"
-  echo "-------------"
-  echo "-------------"
-  echo "-------------"
-  echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
-  echo "-------------"
-  echo "-------------"
-  echo "-------------"
-  echo ""
-  echo "public key:"
-  cat /home/user/.ssh/id_ed25519.pub
-  read -p "Press any key to continue... " -n1 -s
-  echo ""
 fi
-if [ ! -f /home/user/.ssh/id_rsa ]; then
-  ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f /home/user/.ssh/id_rsa -N ''
-fi
+echo "-------------"
+echo "-------------"
+echo "-------------"
+echo "-------------"
+echo "-------------"
+echo "add your SSH key to https://github.com/settings/ssh/new and https://bitbucket.org/account/settings/ssh-keys/"
+echo "-------------"
+echo "-------------"
+echo "-------------"
+echo ""
+echo "public key:"
+cat /home/user/.ssh/id_ed25519.pub
+read -p "Press any key to continue... " -n1 -s
+echo ""
 
 # make user sudo without password.
 echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER 1> /dev/null
